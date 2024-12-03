@@ -11,6 +11,8 @@
             <property name="jakarta.persistence.jdbc.password" value="admin"/>
             <property name="jakarta.persistence.jdbc.user" value="admin"/>
             <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
+            <!--            Caching-->
+            <property name="jakarta.persistence.sharedCache.mode" value="DISABLE_SELECTIVE"/>
             <!--            Showing queries-->
             <property name="eclipselink.logging.sql" value="true"/>
             <property name="eclipselink.logging.parameters" value="true"/>

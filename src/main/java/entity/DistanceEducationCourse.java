@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
+@Cacheable(false)
 public class DistanceEducationCourse extends Course {
     private String examProfessor;
 
