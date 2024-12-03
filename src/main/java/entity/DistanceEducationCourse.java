@@ -5,11 +5,6 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "DistanceEducationCourse.UpcomingWebinars", query = "SELECT DISTINCT c from " +
-                "DistanceEducationCourse c JOIN c.webinarSessionDates wsd where wsd.date >= :startDate AND wsd.date <" +
-                " :endDate")
-})
 public class DistanceEducationCourse extends Course {
     private String examProfessor;
 
