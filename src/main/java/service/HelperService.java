@@ -16,10 +16,10 @@ public class HelperService {
     }
 
     public void runTasks() {
-        jpqlTask();
+//        jpqlTask();
         namedQueryTask();
-        criteriaQueryTask();
-        updateStudentToCheckVersion();
+//        criteriaQueryTask();
+//        updateStudentToCheckVersion();
     }
 
     private void jpqlTask() {
@@ -32,9 +32,11 @@ public class HelperService {
     }
 
     private void namedQueryTask() {
+        ps.startTransaction();
         TypedQuery<Student> studentNamedQuery = ps.getEntityManager().createNamedQuery("Student.canGraduate",
                 Student.class);
         List<Student> resultList = studentNamedQuery.getResultList();
+        ps.endTransaction();
         System.out.println("\n\nNamed Query Task");
         System.out.println(resultList);
     }
