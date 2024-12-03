@@ -19,6 +19,7 @@ public class HelperService {
         jpqlTask();
         namedQueryTask();
         criteriaQueryTask();
+        updateStudentToCheckVersion();
     }
 
     private void jpqlTask() {
@@ -57,6 +58,16 @@ public class HelperService {
 
         System.out.println("\n\nCriteria Query Task");
         System.out.println(resultList);
+    }
+
+    private void updateStudentToCheckVersion() {
+        Student student = ps.getEntityManager().find(Student.class, 1L);
+        ps.startTransaction();
+        student.setName("Updated name");
+        ps.endTransaction();
+        Student student2 = ps.getEntityManager().find(Student.class, 1L);
+        System.out.println("\nUpdated Student to check Versioning");
+        System.out.println(student2);
     }
 
 }

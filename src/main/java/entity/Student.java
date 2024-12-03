@@ -22,6 +22,9 @@ public class Student {
     @ManyToMany
     List<Course> coursesAttended;
 
+    @Version
+    private int version;
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
@@ -29,6 +32,7 @@ public class Student {
                 .append("  emId: ").append(emId).append(",\n")
                 .append("  name: '").append(name).append("',\n")
                 .append("  gpa: ").append(gpa).append(",\n")
+                .append("  version: ").append(version).append(",\n")
                 .append("  courseAttending: ").append(courseAttending != null ? courseAttending.toString() : "null").append(",\n")
                 .append("  coursesAttended: [\n");
 
