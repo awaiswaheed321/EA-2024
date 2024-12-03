@@ -6,9 +6,6 @@ import java.time.LocalDate;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@NamedQueries({
-        @NamedQuery(name = "Course.CoursesByProfessor", query = "SELECT c from Course c where c.professor = :name")
-})
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

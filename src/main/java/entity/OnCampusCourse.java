@@ -5,11 +5,6 @@ import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "OnCampusCourse.PopularCourses", query = "SELECT c from OnCampusCourse c where c.capacity " +
-                "> 50"),
-        @NamedQuery(name = "OnCampusCourse.RoomAssignments", query = "SELECT c FROM OnCampusCourse c WHERE c.room IN (SELECT c2.room FROM OnCampusCourse c2 GROUP BY c2.room)")
-})
 public class OnCampusCourse extends Course {
     private String room;
     private Integer capacity;

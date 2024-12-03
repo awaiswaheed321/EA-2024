@@ -5,16 +5,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@NamedQueries({
-        @NamedQuery(name = "Student.canGraduate", query = "SELECT s from Student s JOIN s.coursesAttended c "),
-        @NamedQuery(name = "Student.TopPerformers", query = "SELECT s from Student s where s.gpa > 4.0"),
-        @NamedQuery(name = "Student.AvailableStudents", query = "SELECT s from Student s where s.courseAttending IS " +
-                "NULL"),
-        @NamedQuery(name = "Student.CompletedCourses", query = "select s from Student s JOIN s.coursesAttended c " +
-                "GROUP BY s HAVING COUNT(c) > 10"),
-        @NamedQuery(name = "Student.LowPerformers", query = "SELECT s from Student s where s.gpa < 2.5")
-})
-
+@NamedQuery(name = "Student.canGraduate", query = "SELECT s from Student s JOIN s.coursesAttended c ")
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
