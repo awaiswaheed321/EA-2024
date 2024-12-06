@@ -1,6 +1,6 @@
 package edu.miu.ea.springbeans;
 
-public class Game {
+public abstract class Game {
     private Vehicle vehicle;
 
     public Game(Vehicle vehicle) {
@@ -10,4 +10,6 @@ public class Game {
     public void play() {
         vehicle.move();
     }
+
+    abstract public Vehicle getVehicle();
 }

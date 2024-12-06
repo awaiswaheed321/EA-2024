@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <bean id="bike" class="edu.miu.ea.springbeans.Bike"></bean>
-    <bean id="car" class="edu.miu.ea.springbeans.Car"></bean>
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+    <context:annotation-config/>
+
+    <bean id="postProcessor" class="edu.miu.ea.springbeans.PostProcessor"/>
+
+    <bean id="car" class="edu.miu.ea.springbeans.Car" scope="prototype" init-method="init" destroy-method="destroyCar"/>
+    <bean id="bike" class="edu.miu.ea.springbeans.Bike" scope="prototype" init-method="init"
+          destroy-method="destroyBike"/>
+
     <bean id="carGame" class="edu.miu.ea.springbeans.Game">
-        <constructor-arg ref="car"></constructor-arg>
+        <constructor-arg ref="car"/>
+        <lookup-method name="getVehicle" bean="car"/>
     </bean>
+
     <bean id="bikeGame" class="edu.miu.ea.springbeans.Game">
-        <constructor-arg ref="bike"></constructor-arg>
+        <constructor-arg ref="bike"/>
+        <lookup-method name="getVehicle" bean="bike"/>
     </bean>
 </beans>

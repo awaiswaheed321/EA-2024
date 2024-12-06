@@ -15,11 +15,27 @@ public class Main {
         javaCarGame.play();
         javaBikeGame.play();
 
+        javaBikeGame.getVehicle();
+        javaBikeGame.getVehicle();
+        javaBikeGame.getVehicle();
+        javaCarGame.getVehicle();
+        javaCarGame.getVehicle();
+        javaCarGame.getVehicle();
+
         System.out.println("\n\nRunning with XML based Configuration");
-        ApplicationContext xmlBasedContext = new ClassPathXmlApplicationContext("config.xml");
+        ClassPathXmlApplicationContext xmlBasedContext = new ClassPathXmlApplicationContext("config.xml");
         Game xmlCarGame = xmlBasedContext.getBean("carGame", Game.class);
         Game xmlBikeGame = xmlBasedContext.getBean("bikeGame", Game.class);
         xmlCarGame.play();
         xmlBikeGame.play();
+
+        xmlCarGame.getVehicle();
+        xmlCarGame.getVehicle();
+        xmlCarGame.getVehicle();
+
+        xmlBikeGame.getVehicle();
+        xmlBikeGame.getVehicle();
+        xmlBikeGame.getVehicle();
+        xmlBasedContext.close();
     }
 }
