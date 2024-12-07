@@ -1,21 +1,22 @@
 package edu.miu.ea.config;
 
-import edu.miu.ea.aspect.Task1Aspect;
-import edu.miu.ea.springbeans.Bike;
-import edu.miu.ea.springbeans.Car;
-import edu.miu.ea.springbeans.Game;
-import edu.miu.ea.springbeans.Vehicle;
+import edu.miu.ea.aspect.Task2Aspect;
+import edu.miu.ea.springbeans.*;
+import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @Configuration
-@EnableAspectJAutoProxy
 public class SpringConfig {
     @Bean
-    public Task1Aspect task1Aspect() {
-        return new Task1Aspect();
+    public Task2Aspect gameAspect() {
+        return new Task2Aspect();
+    }
+
+    @Bean
+    public BeanCounter beanCounter() {
+        return new BeanCounter();
     }
 
     @Bean
@@ -28,13 +29,45 @@ public class SpringConfig {
         return new Car();
     }
 
-    @Bean(name = "carGame")
-    public Game getCarGame(@Qualifier("car") Vehicle vehicle) {
-        return new Game(vehicle);
+    @Bean(name = "carGameProxy")
+    public ProxyFactoryBean carGame() {
+        ProxyFactoryBean proxy = new ProxyFactoryBean();
+        proxy.setTarget(new Game(car()));
+        proxy.setInterceptorNames("gameAspect");
+        return proxy;
     }
 
-    @Bean(name = "bikeGame")
-    public Game getBikeGame(@Qualifier("bike") Vehicle vehicle) {
-        return new Game(vehicle);
+    @Bean(name = "bikeGameProxy")
+    public ProxyFactoryBean bikeGame() {
+        ProxyFactoryBean proxy = new ProxyFactoryBean();
+        proxy.setTarget(new Game(bike()));
+        proxy.setInterceptorNames("gameAspect");
+        return proxy;
     }
+
+//    @Bean(name = "carGame")
+//    public Game carGame() {
+//        return new Game(car());
+//    }
+//
+//    @Bean(name = "bikeGame")
+//    public Game bikeGame() {
+//        return new Game(bike());
+//    }
+//
+//    @Bean(name = "carGameProxy")
+//    public ProxyFactoryBean carGameProxy() {
+//        ProxyFactoryBean proxy = new ProxyFactoryBean();
+//        proxy.setTarget(carGame());
+//        proxy.setInterceptorNames("gameAspect");
+//        return proxy;
+//    }
+//
+//    @Bean(name = "bikeGameProxy")
+//    public ProxyFactoryBean bikeGameProxy() {
+//        ProxyFactoryBean proxy = new ProxyFactoryBean();
+//        proxy.setTarget(bikeGame());
+//        proxy.setInterceptorNames("gameAspect");
+//        return proxy;
+//    }
 }
