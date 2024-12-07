@@ -1,10 +1,11 @@
 package edu.miu.ea.springbeans;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Lookup;
-
 public class Game {
-    Vehicle vehicle;
+    private final Vehicle vehicle;
+
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
 
     public Game(Vehicle vehicle) {
         this.vehicle = vehicle;
