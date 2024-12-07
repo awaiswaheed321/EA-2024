@@ -1,22 +1,24 @@
 package edu.miu.ea.springbeans;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Lookup;
-import org.springframework.stereotype.Component;
 
-@Component
 public abstract class Game {
-    final Vehicle car;
-    final Vehicle bike;
+    Vehicle car;
+    Vehicle bike;
 
-    @Autowired
-    public Game(Car car, Bike bike) {
+    public Game() {
+    }
+
+    public void setCar(Car car) {
         this.car = car;
+    }
+
+    public void setBike(Bike bike) {
         this.bike = bike;
     }
 
     public void play() {
-        System.out.println("Autowired Car and Bike");
+        System.out.println("Autowired Vehicles");
         car.move();
         bike.move();
 
@@ -28,8 +30,8 @@ public abstract class Game {
     }
 
     @Lookup
-    abstract Car getCar();
+    abstract public Car getCar();
 
     @Lookup
-    abstract Bike getBike();
+    abstract public Bike getBike();
 }
