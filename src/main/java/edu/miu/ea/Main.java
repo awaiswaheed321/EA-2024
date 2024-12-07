@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Running with XML based Configuration.\nAdded UUID to Car and Bike to distinguish objects.\n");
         ApplicationContext xmlBasedContext = new ClassPathXmlApplicationContext("config.xml");
-        Game xmlCarGame = xmlBasedContext.getBean(Game.class);
-       xmlCarGame.play();
+        Game game = xmlBasedContext.getBean(Game.class);
+       game.play();
     }
 }
