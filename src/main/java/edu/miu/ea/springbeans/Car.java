@@ -7,6 +7,6 @@ public class Car implements Vehicle {
 
     @Override
     public void move() {
-        System.out.println("Car: " + id);
+        System.out.println("Car: " + id + " is moving.");
     }
 }

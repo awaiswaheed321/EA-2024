@@ -7,9 +7,12 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Running with Java based Configuration.\nAdded UUID to Car and Bike to distinguish objects.\n");
+        System.out.println("Running with Java based Configuration.\nAdded UUID to Car and Bike to distinguish objects" +
+                ".\n");
         ApplicationContext javaBasedContext = new AnnotationConfigApplicationContext(SpringConfig.class);
-        Game game = javaBasedContext.getBean(Game.class);
-       game.play();
+        Game carGame = javaBasedContext.getBean("carGame", Game.class);
+        carGame.play();
+        Game bikeGame = javaBasedContext.getBean("bikeGame", Game.class);
+        bikeGame.play();
     }
 }

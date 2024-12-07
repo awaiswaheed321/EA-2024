@@ -3,6 +3,8 @@ package edu.miu.ea.config;
 import edu.miu.ea.springbeans.Bike;
 import edu.miu.ea.springbeans.Car;
 import edu.miu.ea.springbeans.Game;
+import edu.miu.ea.springbeans.Vehicle;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,18 +20,13 @@ public class SpringConfig {
         return new Car();
     }
 
-    @Bean
-    public Game getGame() {
-        return new Game() {
-            @Override
-            public Car getCar() {
-                return car();
-            }
+    @Bean(name = "carGame")
+    public Game getCarGame(@Qualifier("car") Vehicle vehicle) {
+        return new Game(vehicle);
+    }
 
-            @Override
-            public Bike getBike() {
-                return bike();
-            }
-        };
+    @Bean(name = "bikeGame")
+    public Game getBikeGame(@Qualifier("bike") Vehicle vehicle) {
+        return new Game(vehicle);
     }
 }
