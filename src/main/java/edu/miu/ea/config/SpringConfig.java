@@ -29,45 +29,29 @@ public class SpringConfig {
         return new Car();
     }
 
+    @Bean(name = "carGame")
+    public Game carGame() {
+        return new Game(car());
+    }
+
+    @Bean(name = "bikeGame")
+    public Game bikeGame() {
+        return new Game(bike());
+    }
+
     @Bean(name = "carGameProxy")
-    public ProxyFactoryBean carGame() {
+    public ProxyFactoryBean carGameProxy() {
         ProxyFactoryBean proxy = new ProxyFactoryBean();
-        proxy.setTarget(new Game(car()));
+        proxy.setTarget(carGame());
         proxy.setInterceptorNames("gameAspect");
         return proxy;
     }
 
     @Bean(name = "bikeGameProxy")
-    public ProxyFactoryBean bikeGame() {
+    public ProxyFactoryBean bikeGameProxy() {
         ProxyFactoryBean proxy = new ProxyFactoryBean();
-        proxy.setTarget(new Game(bike()));
+        proxy.setTarget(bikeGame());
         proxy.setInterceptorNames("gameAspect");
         return proxy;
     }
-
-//    @Bean(name = "carGame")
-//    public Game carGame() {
-//        return new Game(car());
-//    }
-//
-//    @Bean(name = "bikeGame")
-//    public Game bikeGame() {
-//        return new Game(bike());
-//    }
-//
-//    @Bean(name = "carGameProxy")
-//    public ProxyFactoryBean carGameProxy() {
-//        ProxyFactoryBean proxy = new ProxyFactoryBean();
-//        proxy.setTarget(carGame());
-//        proxy.setInterceptorNames("gameAspect");
-//        return proxy;
-//    }
-//
-//    @Bean(name = "bikeGameProxy")
-//    public ProxyFactoryBean bikeGameProxy() {
-//        ProxyFactoryBean proxy = new ProxyFactoryBean();
-//        proxy.setTarget(bikeGame());
-//        proxy.setInterceptorNames("gameAspect");
-//        return proxy;
-//    }
 }

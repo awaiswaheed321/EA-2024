@@ -11,7 +11,6 @@ public class BeanCounter implements BeanPostProcessor {
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        System.out.println(beanName);
         counter++;
         return bean;
     }
