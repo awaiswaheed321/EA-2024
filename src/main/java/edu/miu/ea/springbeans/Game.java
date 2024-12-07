@@ -1,20 +1,16 @@
 package edu.miu.ea.springbeans;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Lookup;
 
 public abstract class Game {
+    @Autowired
     Vehicle car;
+
+    @Autowired
     Vehicle bike;
 
     public Game() {
-    }
-
-    public void setCar(Car car) {
-        this.car = car;
-    }
-
-    public void setBike(Bike bike) {
-        this.bike = bike;
     }
 
     public void play() {
