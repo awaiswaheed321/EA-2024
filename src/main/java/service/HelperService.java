@@ -5,21 +5,25 @@ import entity.DistanceEducationCourse;
 import entity.Student;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class HelperService {
     private final PersistenceService ps;
 
+    @Autowired
     public HelperService(PersistenceService ps) {
         this.ps = ps;
     }
 
     public void runTasks() {
-//        jpqlTask();
+        jpqlTask();
         namedQueryTask();
-//        criteriaQueryTask();
-//        updateStudentToCheckVersion();
+        criteriaQueryTask();
+        updateStudentToCheckVersion();
     }
 
     private void jpqlTask() {

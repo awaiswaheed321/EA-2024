@@ -1,16 +1,18 @@
-import service.*;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import service.DataGenerationService;
+import service.HelperService;
 
 public class Application {
     public static void main(String[] args) {
         System.out.println("Application Started");
-        try (PersistenceService ps = PersistenceService.getInstance()) {
-            DataGenerationService dgs = new DataGenerationService(ps);
-            dgs.createData();
 
-            HelperService hs = new HelperService(ps);
-            hs.runTasks();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+
+        DataGenerationService dgs = context.getBean(DataGenerationService.class);
+        dgs.createData();
+
+        HelperService hs = context.getBean(HelperService.class);
+        hs.runTasks();
     }
 }

@@ -1,14 +1,18 @@
 package service;
 
 import entity.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class DataGenerationService {
     private final PersistenceService ps;
 
+    @Autowired
     public DataGenerationService(PersistenceService ps) {
         this.ps = ps;
     }

@@ -4,14 +4,17 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.stereotype.Component;
 
-public class PersistenceService implements AutoCloseable {
+@Component
+public class PersistenceService implements DisposableBean {
     private static PersistenceService instance;
     private final EntityManagerFactory emf;
     private final EntityManager em;
     private EntityTransaction tx;
 
-    private PersistenceService() {
+    public PersistenceService() {
         emf = Persistence.createEntityManagerFactory("day3_PU");
         em = emf.createEntityManager();
     }
@@ -45,7 +48,7 @@ public class PersistenceService implements AutoCloseable {
     }
 
     @Override
-    public void close() throws Exception {
+    public void destroy() throws Exception {
         em.close();
         emf.close();
     }
