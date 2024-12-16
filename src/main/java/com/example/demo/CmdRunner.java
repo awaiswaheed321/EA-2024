@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.entity.Customer;
+import com.example.demo.entity.Manufacturer;
 import com.example.demo.entity.Order;
 import com.example.demo.entity.Product;
 import com.example.demo.repository.CustomerRepository;
@@ -14,6 +15,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -46,9 +48,114 @@ public class CmdRunner implements CommandLineRunner {
 //        cqQ2();
 //        cqQ3();
 //        cqQ4();
-        producer.send();
+//        producer.send();
+//            cqQ5();
+//        cqQ6();
+//        cqQ7();
+//        cqQ8();
+
+        cqQ9();
+
+//        System.out.println(cqQ10("Clothing"));
+    }
+
+    public Double cqQ10(String category) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+
+        CriteriaQuery<Double> query = criteriaBuilder.createQuery(Double.class);
+        Root<Product> root = query.from(Product.class);
+
+        // Filter by category
+        Predicate categoryPredicate = criteriaBuilder.equal(root.get("category"), category);
+
+        // Select max price
+        Expression<Double> maxPrice = criteriaBuilder.max(root.get("price"));
+        query.select(maxPrice).where(categoryPredicate);
+
+        return entityManager.createQuery(query).getSingleResult();
+    }
 
 
+    public void cqQ9() {
+        Specification<Customer> specification = (root, query, criteriaBuilder) -> {
+            // Subquery to find orders with 2 or more products
+            Subquery<Long> subquery = query.subquery(Long.class);
+            Root<Order> orderRoot = subquery.from(Order.class);
+            Join<Order, Product> productJoin = orderRoot.join("products", JoinType.LEFT);
+
+            // Group by order ID and having count of products >= 2
+            subquery.select(orderRoot.get("customer").get("id"))
+                    .groupBy(orderRoot.get("id"))
+                    .having(criteriaBuilder.ge(criteriaBuilder.count(productJoin), 2)); // Greater than or equal to 2
+
+            // Match customers whose IDs are in the subquery
+            return criteriaBuilder.in(root.get("id")).value(subquery);
+        };
+
+        List<Customer> customers = customerRepository.findAll(specification);
+
+        customers.forEach(order -> System.out.println("Order: " + order));
+    }
+
+    public void cqQ8() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+
+        CriteriaQuery<Double> query = criteriaBuilder.createQuery(Double.class);
+        Root<Product> root = query.from(Product.class);
+        Predicate categoryPredicate = criteriaBuilder.equal(root.get("category"), "Home Appliances");
+        Expression<Double> avg = criteriaBuilder.avg(root.get("price"));
+        query.select(avg).where(categoryPredicate);
+
+        Double res = entityManager.createQuery(query).getSingleResult();
+        System.out.println("Avg: " + res);
+    }
+
+    public void cqQ7() {
+        Specification<Order> specs = Specification.where(null);
+
+        specs = specs.and(((root, query, criteriaBuilder) -> criteriaBuilder.between(root.get("orderDate"),
+                LocalDate.now().minusMonths(1), LocalDate.now())));
+
+        specs = specs.and(((root, query, criteriaBuilder) -> {
+            Join<Order, Product> productJoin = root.join("products");
+            return productJoin.get("category").in("Electronics", "Clothing");
+        }));
+
+        orderRepository.findAll(specs).forEach(System.out::println);
+    }
+
+    public void cqQ6() {
+        Specification<Product> specs = Specification.where(null);
+
+        specs = specs.and(((root, query, criteriaBuilder) -> {
+            Join<Product, Manufacturer> manufacturerJoin = root.join("manufacturer");
+            return criteriaBuilder.equal(manufacturerJoin.get("name"), "TechCorp");
+        }));
+
+        specs.and(((root, query, criteriaBuilder) -> criteriaBuilder.between(root.get("price"), 50, 300)));
+
+        productRepository.findAll(specs).forEach(System.out::println);
+    }
+
+    public void cqQ5() {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+
+        // Create a CriteriaQuery for the desired result (Tuple: customer ID and product count)
+        CriteriaQuery<Tuple> query = criteriaBuilder.createQuery(Tuple.class);
+        Root<Customer> root = query.from(Customer.class);
+        Join<Customer, Order> orderJoin = root.join("orders");
+        Join<Order, Product> productJoin = orderJoin.join("products");
+        Predicate namePredicate = criteriaBuilder.equal(root.get("name"), "Bob");
+
+        Expression<Long> orderProductsPriceSum = criteriaBuilder.sum(productJoin.get("price"));
+
+        query.multiselect(root.get("name"), orderProductsPriceSum).where(namePredicate);
+        List<Tuple> results = entityManager.createQuery(query).getResultList();
+        for (Tuple tuple : results) {
+            String customerId = tuple.get(0, String.class); // First element is customer ID
+            Double oSum = tuple.get(1, Double.class); // Second element is product count
+            System.out.println("Customer ID: " + customerId + ", Total Products Ordered: " + oSum);
+        }
     }
 
     public void cqQ4() {
